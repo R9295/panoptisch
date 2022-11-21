@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "panopticon"
+version = "0.1.0"
+description = "A Python dependency scanner"
+authors = ["aarnav <aarnavbos@gmail.com>"]
+license = "GPL-3.0"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+ipdb = "^0.13.9"
+pytest = "^7.1.2"
+isort = "^5.10.1"
+pyfakefs = "^4.6.2"
+pre-commit = "^2.20.0"
+coverage = "^6.4.2"
+
+[tool.poetry.scripts]
+panopticon = "panopticon:main"
+
+[tool.black]
+line-length = 79
+include = '\.pyi?$'
+extend-include = true
+exclude = '''
+/(
+    \.git
+  | \.toml
+  | \.lock
+  | \.md
+  | \.env
+)/
+'''
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
