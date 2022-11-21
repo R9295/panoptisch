@@ -1,14 +1,90 @@
 import importlib
+import os
 import time
 
 from anytree import Node, exporter
-from panopticon.imports import import_module
+
+from panopticon.imports import import_module, resolve_imports
 
 
 def remove_module_property(node: Node):
     delattr(node, 'module')
     for child in node.children:
         remove_module_property(child)
+
+
+def get_parent(mod: str) -> str:
+    return '/'.join(mod.split('/')[:-1])
+
+
+def get_module(module_name: str, file: str, current_root: Node):
+    if module_name != 'None':
+        parent_dir = get_parent(file)
+        is_part_of_module = file.endswith('__init__.py') or os.path.exists(
+            f'{parent_dir}/__init__.py'
+        )
+        if os.path.isfile(f'{parent_dir}/{module_name}.py'):
+            if not is_part_of_module:
+                spec = importlib.util.spec_from_file_location(
+                    module_name, f'{parent_dir}/{module_name}.py'
+                )
+                module = importlib.util.module_from_spec(spec)
+                return module, module_name
+            else:
+                return False, module_name
+        elif os.path.isdir(f'{parent_dir}/{module_name}'):
+            if not is_part_of_module:
+                if os.path.exists(f'{parent_dir}/{module_name}/__init__.py'):
+                    spec = importlib.util.spec_from_file_location(
+                        module_name, f'{parent_dir}/{module_name}/__init__.py'
+                    )
+                    module = importlib.util.module_from_spec(spec)
+                    return module, module_name
+            else:
+                return False, module_name
+        else:
+            try:
+                return importlib.import_module(module_name), module_name
+            except ModuleNotFoundError:
+                pass
+                print(
+                    f'AAAAAA Could not resolve: {module_name}, current_root = {current_root.module.__name__}'  # noqa E501
+                )
+    return None, module_name
+
+
+def get_imports(current_root: Node, module_list=[], depth=0, max_depth=15):
+    depth += 1
+    if depth == max_depth:
+        return
+    imports = resolve_imports(current_root.module)
+    for item in imports:
+        file = item.get('file')
+        file_imports = item.get('imports')
+        for module_name in file_imports:
+            module, name = get_module(module_name, file, current_root)
+            if module:
+                node = Node(
+                    name,
+                    module=module,
+                    parent=current_root,
+                )
+                module_list.append(module_name)
+                get_imports(
+                    node,
+                    module_list=module_list,
+                    depth=depth,
+                    max_depth=max_depth,
+                )
+                module_list.remove(module_name)
+            else:
+                if module is not False:
+                    node = Node(
+                        module_name,
+                        parent=current_root,
+                        module=None,
+                        reason='ModuleNotFoundError',
+                    )
 
 
 def run(args):
@@ -24,7 +100,7 @@ def run(args):
     else:
         root_module = import_module(args.module)
     root_node = Node(args.module.replace('.py', ''), module=root_module)
-    # get_imports(root_node, max_depth=args.max_depth)
+    get_imports(root_node, max_depth=args.max_depth)
     remove_module_property(root_node)
     with open(f'{args.out}', 'w') as f:
         f.write(exporter.JsonExporter(indent=4).export(root_node))
