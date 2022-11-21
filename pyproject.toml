@@ -7,6 +7,7 @@ license = "GPL-3.0"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+anytree = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"

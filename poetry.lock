@@ -1,4 +1,19 @@
 [[package]]
+name = "anytree"
+version = "2.8.0"
+description = "Powerful and Lightweight Python Tree Data Structure.."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = ">=1.9.0"
+
+[package.extras]
+dev = ["check-manifest"]
+test = ["coverage"]
+
+[[package]]
 name = "appnope"
 version = "0.1.3"
 description = "Disable App Nap on macOS >= 10.9"
@@ -456,7 +471,7 @@ python-versions = ">=3.6"
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -532,9 +547,13 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "3243a9a32e4931794b3a4da0a897cf1581e0bddf34b183ea25d9b8d538a37843"
+content-hash = "3ec4f6f168c1e556f4bc8b1b36554a57910aa2db183dc363ac29c64bef979fe2"
 
 [metadata.files]
+anytree = [
+    {file = "anytree-2.8.0-py2.py3-none-any.whl", hash = "sha256:14c55ac77492b11532395049a03b773d14c7e30b22aa012e337b1e983de31521"},
+    {file = "anytree-2.8.0.tar.gz", hash = "sha256:3f0f93f355a91bc3e6245319bf4c1d50e3416cc7a35cc1133c1ff38306bbccab"},
+]
 appnope = [
     {file = "appnope-0.1.3-py2.py3-none-any.whl", hash = "sha256:265a455292d0bd8a72453494fa24df5a11eb18373a60c7c0430889f22548605e"},
     {file = "appnope-0.1.3.tar.gz", hash = "sha256:02bd91c4de869fbb1e1c50aafc4098827a7a54ab2f39d9dcba6c9547ed920e24"},
