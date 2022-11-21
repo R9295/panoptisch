@@ -1,5 +1,5 @@
 import argparse
-
+from panopticon.lib_resolver import get_lib_dir
 from panopticon.scanner import run
 
 
@@ -21,7 +21,20 @@ def main():
         help='File to output JSON',
         default='out.json',
     )
+    parser.add_argument(
+        '--auto-lib-dir',
+        action='store_true',
+        help='Automatically ignore builtin modules by lib path. MAY BE BUGGY!',
+    )
+    parser.add_argument(
+        '--lib-dir',
+        type=str,
+        action='store',
+        help='Ignore builtin modules by providing their path',
+    )
     args = parser.parse_args()
+    if args.auto_lib_dir:
+        args.lib_dir = get_lib_dir()
     run(args)
 
 
