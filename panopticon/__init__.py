@@ -10,6 +10,11 @@ def main():
         'module', action='store', help='Name of module you wish to scan'
     )
     parser.add_argument(
+        '--show-lib-dir',
+        action='store_true',
+        help='Prints the automatically resolved builtin source directory.',
+    )
+    parser.add_argument(
         '--max-depth',
         type=int,
         action='store',
@@ -34,9 +39,12 @@ def main():
         help='Ignore builtin modules by providing their path',
     )
     args = parser.parse_args()
-    if args.auto_lib_dir:
-        args.lib_dir = get_lib_dir()
-    run(args)
+    if args.show_lib_dir:
+        print(get_lib_dir())
+    else:
+        if args.auto_lib_dir:
+            args.lib_dir = get_lib_dir()
+        run(args)
 
 
 __all__ = ['main']
