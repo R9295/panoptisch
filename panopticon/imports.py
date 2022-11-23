@@ -24,23 +24,25 @@ def get_ast_from_file(filename: str) -> ast.Module:
     with open(filename) as f:
         try:
             return ast.parse(f.read())
-        #     except SyntaxError as e:
-        #            raise Exception(
-        #               f'Failed parsing AST for {filename}. There appears to be a SyntaxError on line {e.lineno}!'  # noqa E501
-        #          )
+        # ast module has test files that are bad syntax
+        # to test unicode & syntax parsing
+        # so the errors are ignored.
+        # TODO: ignore test files
         except UnicodeDecodeError:
-            # ast has test files that are bad syntax to test unicode parsing
-            # so this is required
-            # TODO: ignore test files
             return ast.Module()
         except SyntaxError:
             return ast.Module()
 
 
-def resolve_imports(module: ModuleType) -> List[str]:
+RESOLVED_IMPORT_LIST = List[
+    Dict[Union[Literal['file'], Literal['imports']], Union[str, List[str]]]
+]
+
+
+def resolve_imports(module: ModuleType) -> RESOLVED_IMPORT_LIST:
     visitor = Visitor()
     files = get_module_files(module)
-    imports: List[Dict[Union[Literal['file'], Literal['imports']]]] = []
+    imports: RESOLVED_IMPORT_LIST = []
     for file in files:
         if not file.endswith('.so'):  # c extension
             file_ast = get_ast_from_file(file)
@@ -51,7 +53,7 @@ def resolve_imports(module: ModuleType) -> List[str]:
     return imports
 
 
-def simplify_imports(imports: List[Dict[str, List[str]]]) -> List[str]:
+def simplify_imports(imports: RESOLVED_IMPORT_LIST) -> RESOLVED_IMPORT_LIST:
     simplified = []
     existing = []
     for item in imports:
@@ -68,5 +70,5 @@ def simplify_imports(imports: List[Dict[str, List[str]]]) -> List[str]:
     return simplified
 
 
-def import_module(module_name: str) -> ModuleType:
-    return importlib.import_module(module_name)
+def import_module(name: str) -> ModuleType:
+    return importlib.import_module(name)
