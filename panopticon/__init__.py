@@ -7,7 +7,7 @@ from panopticon.scanner import run
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'module', action='store', help='Name of module you wish to scan'
+        'module', action='store', help='Name of module or file you wish to scan'
     )
     parser.add_argument(
         '--show-lib-dir',
