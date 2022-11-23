@@ -4,6 +4,7 @@ import importlib
 from types import ModuleType
 from typing import Dict, List, Literal, Union
 
+from panopticon.util import get_file_dir
 from panopticon.visitor import Visitor
 
 
@@ -13,7 +14,7 @@ def get_module_files(module: ModuleType) -> List[str]:
     except AttributeError:
         return []  # frozen module
     if entry.endswith('__init__.py'):
-        entry_folder = entry.replace('/__init__.py', '')
+        entry_folder = get_file_dir(entry)
         return glob.glob(f'{entry_folder}/**/*.py', recursive=True)
     else:
         return [entry]

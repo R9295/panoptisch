@@ -5,6 +5,7 @@ import time
 from anytree import Node, exporter
 
 from panopticon.imports import import_module, resolve_imports
+from panopticon.util import get_file_dir
 
 
 def remove_module_property(node: Node):
@@ -13,17 +14,13 @@ def remove_module_property(node: Node):
         remove_module_property(child)
 
 
-def get_parent(mod: str) -> str:
-    return '/'.join(mod.split('/')[:-1])
-
-
 def get_module(module_name: str, file: str, current_root: Node):
     '''
     We don't care if we're importing a sub-module as it's not nested and
     it's imports will be scanned anyways
     '''
     if module_name != 'None':
-        parent_dir = get_parent(file)
+        parent_dir = get_file_dir(file)
         is_part_of_module = file.endswith('__init__.py') or os.path.exists(
             f'{parent_dir}/__init__.py'
         )
@@ -50,7 +47,6 @@ def get_module(module_name: str, file: str, current_root: Node):
             try:
                 return importlib.import_module(module_name), module_name
             except ModuleNotFoundError:
-                pass
                 print(
                     f'AAAAAA Could not resolve: {module_name}, current_root = {current_root.module.__name__}'  # noqa E501
                 )

@@ -1,4 +1,5 @@
 import argparse
+
 from panopticon.lib_resolver import get_lib_dir
 from panopticon.scanner import run
 
