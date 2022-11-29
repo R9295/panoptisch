@@ -40,6 +40,11 @@ def main():
         action='store',
         help='Ignore stdlib modules by providing their path',
     )
+    parser.add_argument(
+        '--omit-not-found',
+        action='store_true',
+        help='Omit modules that could not be solved from report',
+    )
     args = parser.parse_args()
     if args.show_stdlib_dir:
         print(get_stdlib_dir())

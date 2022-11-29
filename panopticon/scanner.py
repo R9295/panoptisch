@@ -69,7 +69,11 @@ def resolve_module(
 
 
 def get_imports(
-    current_root: Node, stdlib_dir=None, depth=0, max_depth=15
+    current_root: Node,
+    stdlib_dir=None,
+    depth=0,
+    max_depth=15,
+    omit_not_found=False,
 ):
     depth += 1
     if depth == max_depth:
@@ -102,7 +106,7 @@ def get_imports(
                         max_depth=max_depth,
                     )
                 else:
-                    if module is not False:
+                    if module is not False and omit_not_found:
                         node = Node(
                             module_name,
                             parent=current_root,
@@ -112,9 +116,13 @@ def get_imports(
 
 
 def run(args):
-    print(
-        f'Running Panopticon on module {args.module} with maximum dependency depth of {args.max_depth}. Lib dir is {args.stdlib_dir}'  # noqa E501
-    )
+    print('-' * 50)
+    print(f'Running Panopticon on module {args.module}')
+    print('-' * 50)
+    print(f'maximum dependency depth: {args.max_depth}')
+    print(f'stdlib dir is {args.stdlib_dir}')
+    print(f'omit not found: {args.omit_not_found}')
+    print('-' * 50)
     start = time.time()
     if args.module.endswith('.py'):
         spec = importlib.util.spec_from_file_location(
@@ -128,11 +136,13 @@ def run(args):
         root_node,
         max_depth=args.max_depth,
         stdlib_dir=args.stdlib_dir,
+        omit_not_found=args.omit_not_found,
     )
     remove_module_property(root_node)
     with open(f'{args.out}', 'w') as f:
         f.write(exporter.JsonExporter(indent=4).export(root_node))
     end = time.time()
-    elapsed = '%.2f' % (end - start)
+    elapsed = '%.2fs' % (end - start)
+    print('-' * 50)
     print(f'Done in {elapsed}')
     print(f'See {args.out}')
