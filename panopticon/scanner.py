@@ -1,10 +1,16 @@
 import importlib
 import os
 import time
+from types import ModuleType
+from typing import Tuple, Union
 
 from anytree import Node, exporter
 
-from panopticon.imports import import_module, resolve_imports
+from panopticon.imports import (
+    import_file_module,
+    import_module,
+    resolve_imports,
+)
 from panopticon.util import get_file_dir
 
 
@@ -14,42 +20,49 @@ def remove_module_property(node: Node) -> None:
         remove_module_property(child)
 
 
-def get_module(module_name: str, file: str, current_root: Node) -> None:
+def resolve_module(
+    module_name: str, parent_file: str, parent_module: ModuleType
+) -> Tuple[Union[bool, None], str]:
     '''
-    We don't care if we're importing a sub-module as it's not nested and
-    it's imports will be scanned anyways
+    This function resolves an imported module by the parent.
+    The resolver behaves like Python's import system.
+    If the imported module is a submodule of the parent module,
+    the function returns False because:
+    1. It is a nested module, not a dependency of the parent.
+    2. The files from the submodule as included in the parent module,
+    so it's imports will be parsed and factored in as the parent's imports.
     '''
     if module_name != 'None':
-        parent_dir = get_file_dir(file)
-        is_part_of_module = file.endswith('__init__.py') or os.path.exists(
-            f'{parent_dir}/__init__.py'
-        )
-        if os.path.isfile(f'{parent_dir}/{module_name}.py'):
+        parent_dir = get_file_dir(parent_file)
+        is_part_of_module = parent_file.endswith(
+            '__init__.py'
+        ) or os.path.exists(f'{parent_dir}/__init__.py')
+        module_as_dir = f'{parent_dir}/{module_name}'
+        module_as_file = f'{module_as_dir}.py'
+        if os.path.isfile(module_as_file):
             if not is_part_of_module:
-                spec = importlib.util.spec_from_file_location(
-                    module_name, f'{parent_dir}/{module_name}.py'
-                )
-                module = importlib.util.module_from_spec(spec)
+                module = import_file_module(module_name, module_as_file)
                 return module, module_name
             else:
                 return False, module_name
-        elif os.path.isdir(f'{parent_dir}/{module_name}'):
+        elif os.path.isdir(module_as_dir):
             if not is_part_of_module:
-                if os.path.exists(f'{parent_dir}/{module_name}/__init__.py'):
-                    spec = importlib.util.spec_from_file_location(
-                        module_name, f'{parent_dir}/{module_name}/__init__.py'
+                # this check matters as a simple script cannot
+                # import another script in a folder if the folder does not have
+                # an __init__.py (making it a module)
+                if os.path.exists(f'{module_as_dir}/__init__.py'):
+                    module = import_file_module(
+                        module_name, f'{module_as_dir}/__init__.py'
                     )
-                    module = importlib.util.module_from_spec(spec)
                     return module, module_name
             else:
                 return False, module_name
-        else:
-            try:
-                return importlib.import_module(module_name), module_name
-            except ModuleNotFoundError:
-                print(
-                    f'AAAAAA Could not resolve: {module_name}, current_root = {current_root.module.__name__}'  # noqa E501
-                )
+        try:
+            return import_module(module_name), module_name
+        except ModuleNotFoundError:
+            print(
+                f'AAAAA Could not resolve: {module_name}, parent = {parent_module.__name__}'  # noqa E501
+            )
     return None, module_name
 
 
@@ -71,7 +84,9 @@ def get_imports(
                     and 'site-packages' not in file
                 ):
                     continue
-                module, name = get_module(module_name, file, current_root)
+                module, name = resolve_module(
+                    module_name, file, current_root.module
+                )
                 if module:
                     node = Node(
                         name,

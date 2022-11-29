@@ -72,3 +72,9 @@ def simplify_imports(imports: RESOLVED_IMPORT_LIST) -> RESOLVED_IMPORT_LIST:
 
 def import_module(name: str) -> ModuleType:
     return importlib.import_module(name)
+
+
+def import_file_module(name: str, path: str) -> ModuleType:
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    return module
