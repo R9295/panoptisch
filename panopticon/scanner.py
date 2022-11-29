@@ -25,13 +25,14 @@ def resolve_module(
     module_name: str, parent_file: str, parent_module: ModuleType
 ) -> Tuple[Union[bool, None], str]:
     '''
-    This function resolves an imported module by the parent.
+    This function resolves a module by imported by the parent_file.
     The resolver behaves like Python's import system.
     If the imported module is a submodule of the parent module,
     the function returns False because:
     1. It is a nested module, not a dependency of the parent.
     2. The files from the submodule as included in the parent module,
     so it's imports will be parsed and factored in as the parent's imports.
+    TODO: handle None
     '''
     if module_name != 'None':
         parent_dir = get_file_dir(parent_file)
