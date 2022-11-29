@@ -6,11 +6,7 @@ from typing import Tuple, Union
 
 from anytree import Node, exporter
 
-from panopticon.imports import (
-    import_file_module,
-    import_module,
-    resolve_imports,
-)
+from panopticon.imports import import_file_module, import_module, resolve_imports
 from panopticon.util import get_file_dir
 
 
@@ -124,9 +120,12 @@ def run(args):
         root_module = importlib.util.module_from_spec(spec)
     else:
         root_module = import_module(args.module)
-    root_node = Node(args.module.replace('.py', ''), module=root_module)
+    root_node = Node(root_module.__name__, module=root_module)
     get_imports(
-        root_node, max_depth=args.max_depth, stdlib_dir=args.stdlib_dir
+        root_node,
+        module_list=[root_module.__name__],
+        max_depth=args.max_depth,
+        stdlib_dir=args.stdlib_dir,
     )
     remove_module_property(root_node)
     with open(f'{args.out}', 'w') as f:
