@@ -68,7 +68,7 @@ def resolve_module(
 
 
 def get_imports(
-    current_root: Node, module_list=[], stdlib_dir=None, depth=0, max_depth=15
+    current_root: Node, stdlib_dir=None, depth=0, max_depth=15
 ):
     depth += 1
     if depth == max_depth:
@@ -78,7 +78,7 @@ def get_imports(
         file = item.get('file')
         file_imports = item.get('imports')
         for module_name in file_imports:
-            if module_name not in module_list:
+            if module_name != current_root.module.__name__:
                 if (
                     stdlib_dir
                     and stdlib_dir in file
@@ -94,15 +94,12 @@ def get_imports(
                         module=module,
                         parent=current_root,
                     )
-                    module_list.append(module_name)
                     get_imports(
                         node,
                         stdlib_dir=stdlib_dir,
-                        module_list=module_list,
                         depth=depth,
                         max_depth=max_depth,
                     )
-                    module_list.remove(module_name)
                 else:
                     if module is not False:
                         node = Node(
@@ -128,7 +125,6 @@ def run(args):
     root_node = Node(root_module.__name__, module=root_module)
     get_imports(
         root_node,
-        module_list=[root_module.__name__],
         max_depth=args.max_depth,
         stdlib_dir=args.stdlib_dir,
     )
