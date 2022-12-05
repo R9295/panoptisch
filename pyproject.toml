@@ -1,9 +1,30 @@
 [tool.poetry]
 name = "panopticon"
 version = "0.1.0"
-description = "A Python dependency scanner"
+description = "A recursive Python dependency scanner."
 authors = ["aarnav <aarnavbos@gmail.com>"]
+
+
+homepage = "https://github.com/R9295/panopticon"
+repository = "https://github.com/R9295/panopticon"
+documentation = "https://github.com/R9295/panopticon"
+
 license = "GPL-3.0"
+
+
+keywords = [
+    "Dependency Scanner",
+    "Security",
+    "Supply Chain",
+    "Tool",
+]
+
+
+readme = "README.md"
+classifiers = [
+    "Topic :: Software Development :: Security",
+    "Operating System :: OS Independent",
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
