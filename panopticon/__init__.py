@@ -9,7 +9,7 @@ def main():
     parser.add_argument(
         'module',
         action='store',
-        help='Name of module or file you wish to scan',
+        help='Name of module or file you wish to scan.',
     )
     parser.add_argument(
         '--show-stdlib-dir',
@@ -26,13 +26,13 @@ def main():
     parser.add_argument(
         '--out',
         action='store',
-        help='File to output JSON',
+        help='File to output report.',
         default='out.json',
     )
     parser.add_argument(
         '--auto-stdlib-dir',
         action='store_true',
-        help='Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. try running panopticon <module_name> --show-stdlib-dir to see the directory before using this.',  # noqa E501
+        help='Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panopticon <module_name> --show-stdlib-dir to see the directory before using this.',  # noqa E501
     )
     parser.add_argument(
         '--stdlib-dir',
@@ -43,7 +43,7 @@ def main():
     parser.add_argument(
         '--omit-not-found',
         action='store_true',
-        help='Omit modules that could not be solved from report',
+        help='Do not include modules that could not be resolved in report',
     )
     args = parser.parse_args()
     if args.show_stdlib_dir:
