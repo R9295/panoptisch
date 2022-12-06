@@ -1,5 +1,10 @@
  ## Panoptisch: A recursive dependency scanner for Python projects
-
+![](https://img.shields.io/github/commit-activity/w/R9295/panoptisch?style=flat-square)
+![](https://img.shields.io/github/issues/R9295/panoptisch?style=flat-square)
+![](https://img.shields.io/pypi/v/panoptisch?style=flat-square)
+[![Downloads](https://pepy.tech/badge/panoptisch/week)](https://pepy.tech/project/panoptisch)
+![](https://img.shields.io/pypi/format/panoptisch?style=flat-square)
+![](https://img.shields.io/badge/code%20style-black-000000.svg)
 ####  ⚠️🚨 Early stage! May not work as expected 🚨⚠️
 #### What?
 Panoptisch scans your Python file or module to find it's imports (aka dependencies) and recursively does so for all dependencies and sub-dependencies.
