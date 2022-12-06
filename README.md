@@ -1,32 +1,32 @@
- ## Panopticon: A recursive dependency scanner for Python projects
+ ## Panoptisch: A recursive dependency scanner for Python projects
 
 ####  ⚠️🚨 Early stage! May not work as expected 🚨⚠️
 #### What?
-Panopticon scans your Python file or module to find it's imports (aka dependencies) and recursively does so for all dependencies and sub-dependencies.
+Panoptisch scans your Python file or module to find it's imports (aka dependencies) and recursively does so for all dependencies and sub-dependencies.
 It then generates a dependency tree in JSON for you to parse and enforce import policies.
 Imports are resolved by mimicing Python's import system. It's completely static besides the importing of modules to find the location of its source file(s).
 
 ##### Please NOTE:
-There are known **limitations and issues** at this stage. Please read this before using Panopticon.  
+There are known **limitations and issues** at this stage. Please read this before using Panoptisch.  
 See: ``LIMITATIONS.md`` [LINK](LIMITATIONS.md).
 
 
 #### Motivation
-I was not able to find a proper dependency scanner for Python. Panopticon was born out of the need to accurately verify dependency usage accross an entire project.  
+I was not able to find a proper dependency scanner for Python. Panoptisch was born out of the need to accurately verify dependency usage accross an entire project.  
 It's aim is to generate a JSON report that can be parsed and evaluated to **assert import policies**.  
 For example, you may want to restrict ``os``, ``socket``, ``sys`` and ``importlib`` imports to selected packages.
 
 
 #### Usage
 
-1. Install ``Panopticon`` in the same virtual environment as your project, this is important!  
+1. Install ``Panoptisch`` in the same virtual environment as your project, this is important!  
 ```
-pip install <your_panopticon_download>.whl
+pip install panoptisch
 ```
 
 2. Use
 ```
-usage: panopticon <module>
+usage: panoptisch <module>
 
 positional arguments:
   module                Name of module or file you wish to scan.
@@ -43,7 +43,7 @@ options:
 ```
 A typical run may be
 ```
-$ panopticon <module or file> --max-depth 5 --omit-not-found
+$ panoptisch <module or file> --max-depth 5 --omit-not-found
 ```
 3. See report
 ```
