@@ -4,8 +4,8 @@ import importlib
 from types import ModuleType
 from typing import Dict, List, Literal, Union
 
-from panopticon.util import get_file_dir
-from panopticon.visitor import Visitor
+from panoptisch.util import get_file_dir
+from panoptisch.visitor import Visitor
 
 
 def get_module_files(module: ModuleType) -> List[str]:

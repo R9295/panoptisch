@@ -6,9 +6,9 @@ from typing import Tuple, Union
 
 from anytree import Node, exporter
 
-from panopticon.util import get_file_dir
+from panoptisch.util import get_file_dir
 
-from panopticon.imports import (  # isort:skip
+from panoptisch.imports import (  # isort:skip
     import_file_module,
     import_module,
     resolve_imports,

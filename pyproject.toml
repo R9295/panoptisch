@@ -1,13 +1,13 @@
 [tool.poetry]
-name = "panopticon"
+name = "panoptisch"
 version = "0.1.0"
 description = "A recursive Python dependency scanner."
 authors = ["aarnav <aarnavbos@gmail.com>"]
 
 
-homepage = "https://github.com/R9295/panopticon"
-repository = "https://github.com/R9295/panopticon"
-documentation = "https://github.com/R9295/panopticon"
+homepage = "https://github.com/R9295/panoptisch"
+repository = "https://github.com/R9295/panoptisch"
+documentation = "https://github.com/R9295/panoptisch"
 
 license = "GPL-3.0"
 
@@ -40,7 +40,7 @@ pre-commit = "^2.20.0"
 coverage = "^6.4.2"
 
 [tool.poetry.scripts]
-panopticon = "panopticon:main"
+panoptisch = "panopticon:main"
 
 [tool.black]
 line-length = 79

@@ -1,7 +1,7 @@
 import argparse
 
-from panopticon.lib_resolver import get_stdlib_dir
-from panopticon.scanner import run
+from panoptisch.lib_resolver import get_stdlib_dir
+from panoptisch.scanner import run
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
     parser.add_argument(
         '--auto-stdlib-dir',
         action='store_true',
-        help='Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panopticon <module_name> --show-stdlib-dir to see the directory before using this.',  # noqa E501
+        help='Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panoptisch <module_name> --show-stdlib-dir to see the directory before using this.',  # noqa E501
     )
     parser.add_argument(
         '--stdlib-dir',
