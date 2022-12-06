@@ -42,7 +42,7 @@ options:
   --max-depth MAX_DEPTH
                         Maximum dependency depth.
   --out OUT             File to output report.
-  --auto-stdlib-dir     Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panopticon <module_name> --show-stdlib-dir to see the directory before using this.
+  --auto-stdlib-dir     Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panoptisch <module_name> --show-stdlib-dir to see the directory before using this.
   --stdlib-dir STDLIB_DIR Ignore stdlib modules by providing their path.
   --omit-not-found      Do not include modules that could not be resolved in report.
 ```
