@@ -22,8 +22,9 @@ keywords = [
 
 readme = "README.md"
 classifiers = [
-    "Topic :: Software Development :: Security",
+    "Topic :: Security",
     "Operating System :: OS Independent",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
 ]
 
 [tool.poetry.dependencies]
