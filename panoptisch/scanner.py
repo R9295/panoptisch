@@ -71,8 +71,8 @@ def resolve_module(
 def get_imports(
     current_root: Node,
     stdlib_dir=None,
-    depth=0,
-    max_depth=15,
+    depth=-1,
+    max_depth=3,
     omit_not_found=False,
 ):
     depth += 1
