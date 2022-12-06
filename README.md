@@ -5,7 +5,7 @@
 [![Downloads](https://pepy.tech/badge/panoptisch/week)](https://pepy.tech/project/panoptisch)
 ![](https://img.shields.io/pypi/format/panoptisch?style=flat-square)
 ![](https://img.shields.io/badge/code%20style-black-000000.svg)
-####  ⚠️🚨 Early stage! May not work as expected 🚨⚠️
+####  ⚠️🚨 Early stage! May not work as expected! Feedback welcome! 🚨⚠️
 #### What?
 Panoptisch scans your Python file or module to find it's imports (aka dependencies) and recursively does so for all dependencies and sub-dependencies.
 It then generates a dependency tree in JSON for you to parse and enforce import policies.
