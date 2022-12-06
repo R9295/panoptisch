@@ -104,9 +104,10 @@ def get_imports(
                         stdlib_dir=stdlib_dir,
                         depth=depth,
                         max_depth=max_depth,
+                        omit_not_found=omit_not_found,
                     )
                 else:
-                    if module is not False and omit_not_found:
+                    if module is not False and omit_not_found is False:
                         node = Node(
                             module_name,
                             parent=current_root,
