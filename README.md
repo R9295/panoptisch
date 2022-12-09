@@ -55,6 +55,15 @@ $ panoptisch <module or file> --max-depth 5 --omit-not-found
 ```
 $ more out.json
 ```
+4. We might not be interested in the dependencies of standard library modules as we place an implicit trust in them.  
+To filter them out, use the ``--show-stdlib-dir`` arguement to see if Panoptisch can automatically resolve your standard library directory, typically ``/usr/local/lib/python3.x`` on linux installations. Then you can exclude it using 
+```
+$ panoptisch <module or file> --auto-stdlib-dir
+```
+If Panoptisch cannot automatically resolve your standard library directory, you can find it yourself and provide it as an argument to ``stdlib-dir``
+```
+$ panoptisch <module or file> --stdlib-dir /the/path/to/your/standardlibrary/
+```
 #### LICENSE
 All work is licensed under the [GNU General Public License Version 3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
