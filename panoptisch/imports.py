@@ -40,7 +40,7 @@ RESOLVED_IMPORT_LIST = List[
 
 
 def resolve_imports(module: ModuleType) -> RESOLVED_IMPORT_LIST:
-    visitor = Visitor()
+    visitor = Visitor(module.__name__)
     files = get_module_files(module)
     imports: RESOLVED_IMPORT_LIST = []
     for file in files:

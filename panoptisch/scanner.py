@@ -34,37 +34,36 @@ def resolve_module(
     so it's imports will be parsed and factored in as the parent's imports.
     TODO: handle None
     '''
-    if module_name != 'None':
-        parent_dir = get_file_dir(parent_file)
-        is_part_of_module = parent_file.endswith(
-            '__init__.py'
-        ) or os.path.exists(f'{parent_dir}/__init__.py')
-        module_as_dir = f'{parent_dir}/{module_name}'
-        module_as_file = f'{module_as_dir}.py'
-        if os.path.isfile(module_as_file):
-            if not is_part_of_module:
-                module = import_file_module(module_name, module_as_file)
+    parent_dir = get_file_dir(parent_file)
+    is_part_of_module = parent_file.endswith('__init__.py') or os.path.exists(
+        f'{parent_dir}/__init__.py'
+    )
+    module_as_dir = f'{parent_dir}/{module_name}'
+    module_as_file = f'{module_as_dir}.py'
+    if os.path.isfile(module_as_file):
+        if not is_part_of_module:
+            module = import_file_module(module_name, module_as_file)
+            return module, module_name
+        else:
+            return False, module_name
+    elif os.path.isdir(module_as_dir):
+        if not is_part_of_module:
+            # this check matters as a simple script cannot
+            # import another script in a folder if the folder does not have
+            # an __init__.py (making it a module)
+            if os.path.exists(f'{module_as_dir}/__init__.py'):
+                module = import_file_module(
+                    module_name, f'{module_as_dir}/__init__.py'
+                )
                 return module, module_name
             else:
                 return False, module_name
-        elif os.path.isdir(module_as_dir):
-            if not is_part_of_module:
-                # this check matters as a simple script cannot
-                # import another script in a folder if the folder does not have
-                # an __init__.py (making it a module)
-                if os.path.exists(f'{module_as_dir}/__init__.py'):
-                    module = import_file_module(
-                        module_name, f'{module_as_dir}/__init__.py'
-                    )
-                    return module, module_name
-            else:
-                return False, module_name
-        try:
-            return import_module(module_name), module_name
-        except ModuleNotFoundError:
-            print(
-                f'AAAAA Could not resolve: {module_name}, parent = {parent_module.__name__}'  # noqa E501
-            )
+    try:
+        return import_module(module_name), module_name
+    except ModuleNotFoundError:
+        print(
+            f'AAAAA Could not resolve: {module_name}, parent = {parent_module.__name__}'  # noqa E501
+        )
     return None, module_name
 
 

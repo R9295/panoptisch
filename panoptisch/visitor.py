@@ -3,15 +3,18 @@ from typing import List
 
 
 class Visitor(ast.NodeVisitor):
-    def __init__(self):
+    def __init__(self, module_name: str):
         super().__init__()
         self.imports: List[str] = []
+        self.module_name = module_name
 
     def visit_Import(self, node: ast.Import):
         self.imports.extend([alias.name for alias in node.names])
 
     def visit_ImportFrom(self, node: ast.ImportFrom):
         module_from = node.module
+        if module_from is None:
+            module_from = self.module_name
         self.imports.extend(
             [f'{module_from}.{alias.name}' for alias in node.names]
         )
