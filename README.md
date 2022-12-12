@@ -10,7 +10,7 @@
 #### What?
 Panoptisch scans your Python file or module to find it's imports (aka dependencies) and recursively does so for all dependencies and sub-dependencies.
 It then generates a dependency tree in JSON for you to parse and enforce import policies.
-Imports are resolved by mimicing Python's import system. It's completely static besides the importing of modules to find the location of its source file(s).  
+Imports are resolved by mimicing Python's import system. It's completely static besides the importing of modules to find the location of its source file(s). Panoptisch also features a minimal sandbox to prevent side-effects when importing dependencies. Note that the sandbox is not foolproof!
 
 ##### Please NOTE:
 There are known **limitations and issues** at this stage. Please read this before using Panoptisch.  
@@ -46,6 +46,7 @@ options:
   --auto-stdlib-dir     Ignore stdlib modules by automatically resolving their path. MAY BE BUGGY. Try running panoptisch <module_name> --show-stdlib-dir to see the directory before using this.
   --stdlib-dir STDLIB_DIR Ignore stdlib modules by providing their path.
   --omit-not-found      Do not include modules that could not be resolved in report.
+  --no-sandbox          Ignore the minimal sandbox implementation.
 ```
 A typical run may be
 ```
