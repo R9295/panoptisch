@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "panoptisch"
-version = "0.1.4"
+version = "0.1.5"
 description = "A recursive Python dependency scanner."
 authors = ["aarnav <aarnavbos@gmail.com>"]
 
