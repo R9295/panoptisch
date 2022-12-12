@@ -62,6 +62,11 @@ def main():
         action='store_true',
         help='Do not include modules that could not be resolved in report',
     )
+    parser.add_argument(
+        '--no-sandbox',
+        action='store_true',
+        help='Ignore the minimal sandbox implementation.',
+    )
     args = parser.parse_args()
     if args.show_stdlib_dir:
         print(get_stdlib_dir())

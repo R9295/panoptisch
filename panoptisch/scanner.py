@@ -23,6 +23,7 @@ from typing import Tuple, Union
 
 from anytree import Node, exporter
 
+from panoptisch.sandbox import set_audit_hooks
 from panoptisch.util import get_file_dir
 
 from panoptisch.imports import (  # isort:skip
@@ -149,6 +150,8 @@ def run(args):
     else:
         root_module = import_module(args.module)
     root_node = Node(root_module.__name__, module=root_module)
+    if not args.no_sandbox:
+        set_audit_hooks()
     get_imports(
         root_node,
         max_depth=args.max_depth,
