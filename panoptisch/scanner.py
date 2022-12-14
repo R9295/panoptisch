@@ -74,8 +74,8 @@ def resolve_module(
                     module_name, f'{module_as_dir}/__init__.py'
                 )
                 return module, module_name
-            else:
-                return False, module_name
+        else:
+            return False, module_name
     try:
         return import_module(module_name), module_name
     except ModuleNotFoundError:
