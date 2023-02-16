@@ -31,6 +31,8 @@ def get_module_files(module: ModuleType) -> List[str]:
         entry = module.__file__
     except AttributeError:
         return []  # frozen module
+    if entry is None:
+        return []
     if entry.endswith('__init__.py'):
         entry_folder = get_file_dir(entry)
         return glob.glob(f'{entry_folder}/**/*.py', recursive=True)
