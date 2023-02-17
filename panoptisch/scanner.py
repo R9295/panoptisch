@@ -23,6 +23,7 @@ from typing import Tuple, Union
 
 from anytree import Node, exporter
 
+from panoptisch.cache import apply_cache, cache, to_cache
 from panoptisch.sandbox import set_audit_hooks
 from panoptisch.util import get_file_dir
 
@@ -111,18 +112,34 @@ def get_imports(
                     module_name, file, current_root.module
                 )
                 if module:
-                    node = Node(
-                        name,
-                        module=module,
-                        parent=current_root,
-                    )
-                    get_imports(
-                        node,
-                        stdlib_dir=stdlib_dir,
-                        depth=depth,
-                        max_depth=max_depth,
-                        omit_not_found=omit_not_found,
-                    )
+                    cached_module = None
+                    can_be_cached = False
+                    try:
+                        # TODO: module.__file__ may be None in case of frozen module, handle it  # noqa E501
+                        cached_module = cache.get(f'{depth}_{module.__file__}')
+                        can_be_cached = True
+                    # module.__file__ may raise an attribute error
+                    except AttributeError:
+                        pass
+                    if can_be_cached and cached_module:
+                        to_cache.append(
+                            (current_root, f'{depth}_{module.__file__}')
+                        )
+                    else:
+                        node = Node(
+                            name,
+                            module=module,
+                            parent=current_root,
+                        )
+                        if can_be_cached:
+                            cache[f'{depth}_{module.__file__}'] = node
+                        get_imports(
+                            node,
+                            stdlib_dir=stdlib_dir,
+                            depth=depth,
+                            max_depth=max_depth,
+                            omit_not_found=omit_not_found,
+                        )
                 else:
                     if module is not False and omit_not_found is False:
                         node = Node(
@@ -159,6 +176,7 @@ def run(args):
         omit_not_found=args.omit_not_found,
     )
     remove_module_property(root_node)
+    apply_cache(to_cache, cache)
     with open(f'{args.out}', 'w') as f:
         f.write(exporter.JsonExporter(indent=4).export(root_node))
     end = time.time()
